@@ -1,0 +1,31 @@
+---
+- name: Install and Start apache
+  hosts: webservers
+  remote_user: ansible
+  become: yes
+
+  tasks:
+  - name: install apache
+    when: ansible_distribution == "CentOS"
+    yum:
+      name: httpd
+      state: latest
+
+  - name: install apache (apt)
+    when: ansible_distribution == "Debian"
+    package:
+      name: apache2
+      state: latest
+
+  - name: replace index.html
+    copy:
+      dest: /var/www/html/index.html
+      content: "Hi I am host {{ ansible_hostname }} and I run Linux kernel {{ ansible_kernel }} of {{ ansible_distribution }}\n"
+    register: index_file
+
+  - name: start httpd
+    service: name=httpd state=restarted
+
+  - name: output of index.html var contents
+    debug:
+      msg: "{{ index_file }}"

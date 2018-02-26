@@ -1,0 +1,12 @@
+[all]
+server1
+server2
+
+[webservers]
+server2
+
+[file]
+server1
+
+[lamp]
+server2

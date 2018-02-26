@@ -1,0 +1,11 @@
+---
+- name: sample playbook
+  hosts: all
+  vars:
+    test_var: SAMPLE
+    values:
+      - value1
+      - value2
+      - value3
+  tasks:
+    - debug: var=test_var
