@@ -1,0 +1,26 @@
+---
+- hosts: server1
+  become: yes
+  tasks:
+    - name: vgcreation
+      lvg:
+        vg: vgdata
+        pvs: /dev/sdd5
+
+    - name: lvcreation
+      lvol:
+        vg: vgdata
+        lv: data01
+        size: 256M
+
+    - name: create filesystem
+      filesystem:
+        fstype: xfs
+        dev: /dev/vgdata/data01
+
+    - name: mount filesystem
+      mount:
+        name: /data01
+        src: /dev/vgdata/data01
+        fstype: xfs
+        state: mounted
